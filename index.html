@@ -98,47 +98,6 @@
             </div>
         </section>
 
-        <section id="waste-details" class="mb-12">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold">เจาะลึกประเภทขยะและเทคนิคการแยก</h2>
-                <p class="mt-2 text-gray-600 max-w-3xl mx-auto">ทำความเข้าใจประเภทขยะที่สำคัญและผลลัพธ์ของการคัดแยกที่ถูกวิธี เพื่อให้การจัดการขยะมีประสิทธิภาพสูงสุด</p>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="bg-white p-6 rounded-2xl shadow-lg">
-                    <h3 class="text-xl font-semibold text-center mb-4">5 อันดับขยะที่พบบ่อยในงานอีเวนต์</h3>
-                    <div class="chart-container h-80">
-                        <canvas id="topWasteChart"></canvas>
-                    </div>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-lg">
-                    <h3 class="text-xl font-semibold text-center mb-4">ผลลัพธ์เมื่อเทียบวิธีการแยกขยะ</h3>
-                    <div class="chart-container h-80">
-                        <canvas id="landfillScenarioChart"></canvas>
-                    </div>
-                </div>
-            </div>
-             <div class="bg-white p-6 mt-8 rounded-2xl shadow-lg">
-                <h3 class="text-xl font-semibold text-center mb-4">ระดับความสำเร็จในการคัดแยกขยะ</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                    <div class="bg-gray-50 p-4 rounded-lg border">
-                        <p class="font-semibold">แยก น้ำ/น้ำแข็ง + เศษอาหาร</p>
-                        <p class="text-4xl my-2">⭐⭐⭐</p>
-                        <p class="text-2xl font-bold text-yellow-500">~67%</p>
-                    </div>
-                    <div class="bg-gray-50 p-4 rounded-lg border">
-                        <p class="font-semibold">+ แยกขยะพลังงาน</p>
-                        <p class="text-4xl my-2">⭐⭐⭐⭐</p>
-                        <p class="text-2xl font-bold text-orange-500">~81%</p>
-                    </div>
-                    <div class="bg-gray-50 p-4 rounded-lg border border-green-500 ring-2 ring-green-200">
-                        <p class="font-semibold">+ แยกขยะรีไซเคิล (Very Good!)</p>
-                        <p class="text-4xl my-2">⭐⭐⭐⭐⭐</p>
-                        <p class="text-2xl font-bold text-green-600">~90%</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <section id="how-to" class="mb-12">
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-bold">แนวทางการปฏิบัติงานและข้อควรรู้</h2>
@@ -376,102 +335,6 @@
                     }
                 }
             });
-            
-            const topWasteCtx = document.getElementById('topWasteChart').getContext('2d');
-            new Chart(topWasteCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['น้ำเสีย', 'เศษอาหาร', 'ขยะพลังงาน', 'ขยะรีไซเคิล', 'ขยะฝังกลบ'],
-                    datasets: [{
-                        label: 'สัดส่วนขยะ (%)',
-                        data: [35, 30, 20, 10, 5],
-                        backgroundColor: ['#4B8F8C', '#8CCBFF', '#F79824', '#08A045', '#7D7071'],
-                        borderRadius: 6,
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                         x: { 
-                            beginAtZero: true,
-                            max: 45,
-                            ticks: {
-                                callback: function(value) {
-                                    return value + '%'
-                                }
-                            }
-                          },
-                         y: { ticks: { font: { size: 14 } } }
-                    },
-                    plugins: {
-                        ...defaultTooltipOptions.plugins,
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `${context.raw}%`;
-                                },
-                                title: function(context) {
-                                    return context[0].label;
-                                }
-                            }
-                        },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            offset: 4,
-                            color: '#32292F',
-                            font: {
-                                weight: 'bold'
-                            },
-                            formatter: (value) => {
-                                return value + '%';
-                            }
-                        }
-                    }
-                }
-            });
-
-            const landfillScenarioCtx = document.getElementById('landfillScenarioChart').getContext('2d');
-            new Chart(landfillScenarioCtx, {
-                type: 'bar',
-                data: {
-                    labels: [
-                        wrapLabel('มีพี่เลี้ยงช่วยแยก'),
-                        wrapLabel('มีถังขยะ 3 ประเภท'),
-                        wrapLabel('ไม่มีการคัดแยกเลย')
-                    ],
-                    datasets: [{
-                        label: '% ขยะไปหลุมฝังกลบ',
-                        data: [10, 14.5, 100],
-                        backgroundColor: ['#08A045', '#F79824', '#F15946'],
-                        borderRadius: 6,
-                        barThickness: 40,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: { 
-                            beginAtZero: true,
-                            max: 100,
-                            ticks: {
-                                callback: function(value) {
-                                    return value + '%'
-                                }
-                            }
-                        },
-                    },
-                    plugins: {
-                        ...defaultTooltipOptions.plugins,
-                        legend: { display: false }
-                    }
-                }
-            });
-
 
             const buildingStationsCtx = document.getElementById('buildingStationsChart').getContext('2d');
             const buildingLabels = ['อาคารศูนย์การเรียนรู้มหิดล (MLC)', 'อาคารสิริวิทยา', 'อาคารสิทธาคาร'].map(label => wrapLabel(label, 20));
@@ -554,7 +417,7 @@
                 let startPos = { x: 0, y: 0 };
                 let currentTranslate = { x: 0, y: 0 };
 
-                // --- Apply initial styles ---
+                // --- Apply initial styles for better performance and interaction ---
                 container.style.overflow = 'hidden';
                 container.style.maxHeight = '85vh';
                 container.style.display = 'flex';
@@ -566,6 +429,7 @@
                 img.style.transformOrigin = 'center';
                 img.style.maxHeight = 'none';
                 img.style.maxWidth = '100%';
+                img.style.willChange = 'transform'; // Browser optimization hint
 
 
                 function applyTransform() {
@@ -573,11 +437,24 @@
                 }
 
                 // --- Event Listeners ---
-                // 1. Zoom with mouse wheel
+                // 1. Zoom with mouse wheel (zooms towards cursor)
                 container.addEventListener('wheel', (e) => {
                     e.preventDefault();
+                    
                     const delta = e.deltaY > 0 ? -0.15 : 0.15;
-                    scale = Math.max(1, Math.min(4, scale + delta));
+                    const newScale = Math.max(1, Math.min(4, scale + delta));
+                    
+                    // Logic to keep the point under the mouse stationary
+                    const rect = container.getBoundingClientRect();
+                    const mouseX = e.clientX - rect.left;
+                    const mouseY = e.clientY - rect.top;
+                    
+                    const scaleRatio = newScale / scale;
+                    
+                    currentTranslate.x = mouseX - (mouseX - currentTranslate.x) * scaleRatio;
+                    currentTranslate.y = mouseY - (mouseY - currentTranslate.y) * scaleRatio;
+
+                    scale = newScale;
 
                     if (scale === 1) {
                         currentTranslate = { x: 0, y: 0 };
@@ -586,7 +463,7 @@
                     applyTransform();
                 });
 
-                // 2. Pan with mouse drag
+                // 2. Pan with mouse drag (using improved event listener handling)
                 img.addEventListener('mousedown', (e) => {
                     if (scale <= 1) return;
                     e.preventDefault();
@@ -594,22 +471,25 @@
                     startPos.x = e.clientX - currentTranslate.x;
                     startPos.y = e.clientY - currentTranslate.y;
                     img.style.cursor = 'grabbing';
-                    img.style.transition = 'none';
-                });
+                    img.style.transition = 'none'; // No transition while dragging
 
-                window.addEventListener('mousemove', (e) => {
-                    if (!isDragging) return;
-                    currentTranslate.x = e.clientX - startPos.x;
-                    currentTranslate.y = e.clientY - startPos.y;
-                    applyTransform();
-                });
+                    function handleMouseMove(e) {
+                        if (!isDragging) return;
+                        currentTranslate.x = e.clientX - startPos.x;
+                        currentTranslate.y = e.clientY - startPos.y;
+                        applyTransform();
+                    }
 
-                window.addEventListener('mouseup', () => {
-                    if (isDragging) {
+                    function handleMouseUp() {
                         isDragging = false;
                         img.style.cursor = 'grab';
-                        img.style.transition = 'transform 0.2s ease-out';
+                        img.style.transition = 'transform 0.2s ease-out'; // Restore transition
+                        window.removeEventListener('mousemove', handleMouseMove);
+                        window.removeEventListener('mouseup', handleMouseUp);
                     }
+
+                    window.addEventListener('mousemove', handleMouseMove);
+                    window.addEventListener('mouseup', handleMouseUp);
                 });
 
                 // --- Reset function ---
@@ -618,7 +498,7 @@
                     currentTranslate = { x: 0, y: 0 };
                     img.style.transition = 'none';
                     applyTransform();
-                    img.offsetHeight; // Force reflow
+                    img.offsetHeight; // Force browser reflow
                     img.style.transition = 'transform 0.2s ease-out';
                 };
             }
