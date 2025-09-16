@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แผนการจัดการขยะเชิงโต้ตอบ | พิธีพระราชทานปริญญาบัตร</title>
+    <!-- Chosen Palette: Eco-Corporate -->
+    <!-- Application Structure Plan: The application is designed as a top-down narrative. It starts with the high-level goal and benchmark KPIs from a past success (the "why"). A new section is added to detail the "what" - what types of waste to expect and the impact of separation. A "How-To" section is now included for specific operational procedures. It then presents the 3-part strategic overview (the "how"). Finally, it allows users to interactively explore the details of each of the 3 teams through a tab-based interface (the "what"). This structure was chosen to guide the user from general understanding to specific details in a logical flow, making the complex plan easily digestible without overwhelming them with all information at once. -->
+    <!-- Visualization & Content Choices: 
+        1. Benchmark Success (55% Reduction, 90% Recycle): Goal=Inform. Viz=Large stat text and a Donut Chart. Interaction=Tooltips. Justification=KPIs need to be prominent and a donut chart is perfect for part-to-whole data. Library=Chart.js.
+        2. Top 5 Waste Types: Goal=Inform/Organize. Viz=Horizontal Bar Chart. Interaction=Tooltips. Justification=Ranks the most common waste types, providing context for the separation strategy. Library=Chart.js.
+        3. Separation Scenarios: Goal=Compare. Viz=Vertical Bar Chart. Interaction=Tooltips. Justification=Clearly demonstrates the high impact of having assisted sorting stations versus other methods. Library=Chart.js.
+        4. (NEW) How-To Section: Goal=Inform. Viz=Styled info cards with icons. Justification=Provides clear, actionable instructions for key procedures. Method=HTML/Tailwind.
+        5. 3-Part Strategy Overview: Goal=Organize. Viz=HTML/CSS based flowchart. Interaction=Clickable tabs linked from this section. Justification=Provides a clear, high-level map of the operational structure. Method=HTML/Tailwind.
+        6. In-Building Stations: Goal=Compare. Viz=Horizontal Bar Chart with added list of responsibilities. Interaction=Tooltips. Justification=Best for comparing quantities across categories with long labels. Library=Chart.js.
+        7. Outdoor Team Manpower: Goal=Compare/Composition. Viz=Vertical Bar Chart with added list of responsibilities. Interaction=Tooltips. Justification=Clearly shows the workforce composition. Library=Chart.js.
+        8. General Area Actions: Goal=Inform. Viz=Styled info cards with icons. Interaction=None. Justification=Presents distinct operational points cleanly. Method=HTML/Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #F0F4F8;
+            color: #32292F;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 600px;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background-color: #08A045;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .list-disc li::marker {
+            color: #08A045;
+        }
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+        body.modal-active {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#08A045]">แผนปฏิบัติการจัดการขยะ</h1>
+            <p class="text-xl md:text-2xl mt-2">เพื่องานพิธีพระราชทานปริญญาบัตรที่เป็นมิตรต่อสิ่งแวดล้อม</p>
+        </header>
+
+        <section id="event-photo" class="mb-12 text-center">
+            <button id="openImageModal" class="bg-[#08A045] text-white font-bold py-3 px-6 rounded-full hover:bg-green-700 transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                เรื่องของขยะ Open House
+            </button>
+        </section>
+
+        <section id="kpi" class="mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold">เป้าหมายและแรงบันดาลใจ</h2>
+                <p class="mt-2 text-gray-600 max-w-3xl mx-auto">เราตั้งเป้าหมายโดยถอดบทเรียนความสำเร็จจากงาน "Mahidol Open House 2025" เพื่อยกระดับการจัดการขยะในพิธีพระราชทานปริญญาบัตรให้มีประสิทธิภาพสูงสุด</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div class="text-center">
+                    <p class="text-lg text-gray-500">เป้าหมายลดขยะฝังกลบ</p>
+                    <div class="text-7xl md:text-8xl font-bold text-[#08A045] my-2">55%</div>
+                    <p class="text-gray-600">คืออัตราการลดขยะฝังกลบที่ทำได้สำเร็จในงาน Open House ซึ่งเป็นเป้าหมายที่เราจะทำให้ดียิ่งขึ้น</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-center mb-2">สัดส่วนการจัดการขยะจากจุดคัดแยก</h3>
+                    <div class="chart-container h-64 sm:h-80">
+                        <canvas id="recyclingRateChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="waste-details" class="mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold">เจาะลึกประเภทขยะและเทคนิคการแยก</h2>
+                <p class="mt-2 text-gray-600 max-w-3xl mx-auto">ทำความเข้าใจประเภทขยะที่สำคัญและผลลัพธ์ของการคัดแยกที่ถูกวิธี เพื่อให้การจัดการขยะมีประสิทธิภาพสูงสุด</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-center mb-4">5 อันดับขยะที่พบบ่อยในงานอีเวนต์</h3>
+                    <div class="chart-container h-80">
+                        <canvas id="topWasteChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-center mb-4">ผลลัพธ์เมื่อเทียบวิธีการแยกขยะ</h3>
+                    <div class="chart-container h-80">
+                        <canvas id="landfillScenarioChart"></canvas>
+                    </div>
+                </div>
+            </div>
+             <div class="bg-white p-6 mt-8 rounded-2xl shadow-lg">
+                <h3 class="text-xl font-semibold text-center mb-4">ระดับความสำเร็จในการคัดแยกขยะ</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div class="bg-gray-50 p-4 rounded-lg border">
+                        <p class="font-semibold">แยก น้ำ/น้ำแข็ง + เศษอาหาร</p>
+                        <p class="text-4xl my-2">⭐⭐⭐</p>
+                        <p class="text-2xl font-bold text-yellow-500">~67%</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border">
+                        <p class="font-semibold">+ แยกขยะพลังงาน</p>
+                        <p class="text-4xl my-2">⭐⭐⭐⭐</p>
+                        <p class="text-2xl font-bold text-orange-500">~81%</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-green-500 ring-2 ring-green-200">
+                        <p class="font-semibold">+ แยกขยะรีไซเคิล (Very Good!)</p>
+                        <p class="text-4xl my-2">⭐⭐⭐⭐⭐</p>
+                        <p class="text-2xl font-bold text-green-600">~90%</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-to" class="mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold">แนวทางการปฏิบัติงานและข้อควรรู้</h2>
+                <p class="mt-2 text-gray-600 max-w-3xl mx-auto">ขั้นตอนสำคัญและข้อปฏิบัติเพื่อการทำงานที่ราบรื่นและมีประสิทธิภาพ</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-lg text-center">
+                    <div class="text-5xl mb-3">🍽️</div>
+                    <h4 class="font-bold text-lg">เศษอาหาร</h4>
+                    <p class="text-sm text-gray-600">จัดการโดยเครื่องชูชก กำหนดเวลาจัดเก็บ</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg text-center">
+                    <div class="text-5xl mb-3">🗑️</div>
+                    <h4 class="font-bold text-lg">จาน ถ้วย พลาสติก</h4>
+                    <p class="text-sm text-gray-600">ส่งเป็นขยะพลังงาน ไม่ต้องล้าง แค่เทเศษอาหารและเคาะออก</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg text-center">
+                    <div class="text-5xl mb-3">⏰</div>
+                    <h4 class="font-bold text-lg">เวลานัดหมาย</h4>
+                    <p class="text-sm text-gray-600">กำหนดรับขยะเศษอาหารและน้ำแข็ง เวลา 17.00 น. ณ จุดนัดพบ</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg text-center">
+                    <div class="text-5xl mb-3">💻</div>
+                    <h4 class="font-bold text-lg">จดบันทึกข้อมูล</h4>
+                    <p class="text-sm text-gray-600">จดบันทึก ชั่งน้ำหนัก และกรอกข้อมูลในระบบ</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="strategy" class="mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold">โครงสร้างการดำเนินงาน 3 ส่วนหลัก</h2>
+                <p class="mt-2 text-gray-600 max-w-3xl mx-auto">เพื่อให้การทำงานครอบคลุมและมีประสิทธิภาพ เราได้แบ่งทีมปฏิบัติการออกเป็น 3 ส่วนหลักที่ทำงานประสานกัน</p>
+            </div>
+            <div class="flex flex-col md:flex-row justify-around items-center space-y-4 md:space-y-0 md:space-x-4">
+                <div class="text-center">
+                    <div class="bg-white rounded-full h-24 w-24 flex items-center justify-center text-4xl shadow-md">🏢</div>
+                    <p class="mt-3 font-semibold">1. ทีมในอาคาร</p>
+                </div>
+                <div class="text-4xl text-[#08A045] font-light transform rotate-90 md:rotate-0">→</div>
+                <div class="text-center">
+                    <div class="bg-white rounded-full h-24 w-24 flex items-center justify-center text-4xl shadow-md">🌳</div>
+                    <p class="mt-3 font-semibold">2. ทีมนอกอาคาร</p>
+                </div>
+                 <div class="text-4xl text-[#08A045] font-light transform rotate-90 md:rotate-0">→</div>
+                <div class="text-center">
+                    <div class="bg-white rounded-full h-24 w-24 flex items-center justify-center text-4xl shadow-md">🗺️</div>
+                    <p class="mt-3 font-semibold">3. ทีมพื้นที่ทั่วไป</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="details">
+             <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold">เจาะลึกรายละเอียดการปฏิบัติงาน</h2>
+                <p class="mt-2 text-gray-600 max-w-3xl mx-auto">คลิกเพื่อดูรายละเอียดของแต่ละทีมปฏิบัติการ</p>
+            </div>
+            <div class="flex justify-center space-x-2 sm:space-x-4 mb-8">
+                <button class="tab-btn active text-sm sm:text-base font-semibold py-2 px-4 rounded-full bg-gray-200" data-tab="in-building">🏢 ในอาคาร</button>
+                <button class="tab-btn text-sm sm:text-base font-semibold py-2 px-4 rounded-full bg-gray-200" data-tab="outdoor">🌳 นอกอาคาร</button>
+                <button class="tab-btn text-sm sm:text-base font-semibold py-2 px-4 rounded-full bg-gray-200" data-tab="general">🗺️ พื้นที่ทั่วไป</button>
+            </div>
+            
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg min-h-[450px]">
+                <div id="in-building-content" class="tab-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-[#08A045] mb-4">ทีมปฏิบัติการในอาคาร</h3>
+                            <p class="text-gray-600 mb-4">รับผิดชอบการตั้ง "จุดแยกขยะครบวงจร" ในอาคารหลัก โดยมีผู้ประสานงานประจำแต่ละจุด ดังนี้</p>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                <li><b>อาคารศูนย์การเรียนรู้มหิดล (MLC)</b></li>
+                                <li><b>อาคารสิริวิทยา</b></li>
+                                <li><b>อาคารสิทธาคาร</b></li>
+                                <li><b class="text-orange-500">อาคารอื่นๆ ในพื้นที่ศาลายา</b></li>
+                            </ul>
+                        </div>
+                        <div class="chart-container h-80">
+                             <canvas id="buildingStationsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="outdoor-content" class="tab-content hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-[#F79824] mb-4">ทีมปฏิบัติการนอกอาคาร</h3>
+                            <p class="text-gray-600 mb-4">ทีมพี่เลี้ยงคัดแยกขยะ คือกำลังพลหลักนอกอาคาร มีหน้าที่สำคัญในการสนับสนุนการทำงานให้ราบรื่น</p>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                <li>แก้ไขปัญหาเฉพาะหน้าที่อาจเกิดขึ้นระหว่างปฏิบัติงาน</li>
+                                <li>สั่งการและควบคุมดูแลการทำงานของนักศึกษาและแม่บ้าน</li>
+                                <li>ให้ความช่วยเหลือและคำแนะนำแก่ผู้ปฏิบัติงาน</li>
+                                <li>ประสานงานกับทีมบริหารส่วนกลางและทีมภูมิทัศน์</li>
+                                <li>สนับสนุนและให้คำปรึกษานักศึกษาผ่านกลุ่ม Line</li>
+                            </ul>
+                        </div>
+                        <div class="chart-container h-80">
+                             <canvas id="teamManpowerChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="general-content" class="tab-content hidden">
+                    <h3 class="text-2xl font-bold text-[#F15946] mb-4">ทีมปฏิบัติการพื้นที่ทั่วไป</h3>
+                    <p class="text-gray-600 mb-6">ภายใต้การดูแลของพี่หมอ ทีมนี้จะรับผิดชอบภาพรวมการจัดการขยะ 17 จุดทั่วบริเวณงาน เพื่อให้การจัดการขยะครอบคลุมทุกตารางนิ้ว</p>
+                       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                        <div class="bg-gray-100 p-6 rounded-xl text-center">
+                            <div class="text-5xl mb-3">🗑️➕</div>
+                            <h4 class="font-bold text-lg">ติดตั้งถังขยะคู่</h4>
+                            <p class="text-sm text-gray-600">อำนวยความสะดวกในการแยกขยะเบื้องต้นในทุกจุด</p>
+                        </div>
+                        <div class="bg-gray-100 p-6 rounded-xl text-center">
+                             <div class="text-5xl mb-3">🏃‍♂️</div>
+                            <h4 class="font-bold text-lg">ทีมเคลื่อนที่เร็ว (Walker)</h4>
+                            <p class="text-sm text-gray-600">เดินเก็บขยะและดูแลความสะอาดเรียบร้อยตลอดเวลา</p>
+                        </div>
+                        <div class="bg-gray-100 p-6 rounded-xl text-center">
+                             <div class="text-5xl mb-3">🧊</div>
+                            <h4 class="font-bold text-lg">จัดการขยะเศษอาหาร/น้ำแข็ง</h4>
+                            <p class="text-sm text-gray-600">กำหนดเวลานัดหมายและเส้นทางรับขยะอย่างชัดเจน</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="closing-photo" class="mb-12 text-center">
+             <button id="openImageModal2" class="bg-[#08A045] text-white font-bold py-3 px-6 rounded-full hover:bg-green-700 transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                เตรียมแยกขยะ Very Good
+            </button>
+        </section>
+
+        <footer class="text-center mt-12 pt-8 border-t">
+            <p class="text-lg font-semibold">ความสำเร็จร่วมกันสร้างได้</p>
+            <p class="text-gray-600 mt-1">ขอขอบคุณความร่วมมือจากทุกฝ่ายในการสร้างสรรค์พิธีที่น่าจดจำและเป็นมิตรต่อสิ่งแวดล้อม</p>
+        </footer>
+
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center hidden z-50">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-75"></div>
+        <div class="modal-container bg-white w-11/12 md:max-w-4xl mx-auto rounded-lg shadow-lg z-50 overflow-y-auto">
+            <div class="modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
+                <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 18 18">
+                    <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                </svg>
+            </div>
+            <div class="p-2">
+                <img src="https://i.postimg.cc/C5gJgXJ5/MU-Open-House-2025.jpg" alt="เรื่องของขยะ Open House" class="rounded mx-auto">
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal 2 -->
+    <div id="imageModal2" class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center hidden z-50">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-75"></div>
+        <div class="modal-container bg-white w-11/12 md:max-w-4xl mx-auto rounded-lg shadow-lg z-50 overflow-y-auto">
+            <div class="modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
+                <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 18 18">
+                    <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                </svg>
+            </div>
+            <div class="p-2">
+                <img src="https://i.postimg.cc/MKZNffbT/Very-Good.jpg" alt="เตรียมแยกขยะ Very Good" class="rounded mx-auto">
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Chart.register(ChartDataLabels);
+            Chart.defaults.font.family = "'Kanit', sans-serif";
+
+            const defaultTooltipOptions = {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            };
+
+            const wrapLabel = (label, maxLength = 16) => {
+                if (typeof label !== 'string' || label.length <= maxLength) return label;
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + ' ' + word).trim().length > maxLength) {
+                        if(currentLine.length > 0) lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                });
+                if (currentLine) lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const recyclingCtx = document.getElementById('recyclingRateChart').getContext('2d');
+            new Chart(recyclingCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['ขยะรีไซเคิล', 'ขยะฝังกลบ'],
+                    datasets: [{
+                        data: [90, 10],
+                        backgroundColor: ['#08A045', '#F15946'],
+                        borderColor: '#ffffff',
+                        borderWidth: 4,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        ...defaultTooltipOptions.plugins,
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: { family: "'Kanit', sans-serif", size: 14 }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const topWasteCtx = document.getElementById('topWasteChart').getContext('2d');
+            new Chart(topWasteCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['น้ำเสีย', 'เศษอาหาร', 'ขยะพลังงาน', 'ขยะรีไซเคิล', 'ขยะฝังกลบ'],
+                    datasets: [{
+                        label: 'สัดส่วนขยะ (%)',
+                        data: [35, 30, 20, 10, 5],
+                        backgroundColor: ['#4B8F8C', '#8CCBFF', '#F79824', '#08A045', '#7D7071'],
+                        borderRadius: 6,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                         x: { 
+                            beginAtZero: true,
+                            max: 45,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%'
+                                }
+                            }
+                          },
+                         y: { ticks: { font: { size: 14 } } }
+                    },
+                    plugins: {
+                        ...defaultTooltipOptions.plugins,
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.raw}%`;
+                                },
+                                title: function(context) {
+                                    return context[0].label;
+                                }
+                            }
+                        },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'end',
+                            offset: 4,
+                            color: '#32292F',
+                            font: {
+                                weight: 'bold'
+                            },
+                            formatter: (value) => {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            });
+
+            const landfillScenarioCtx = document.getElementById('landfillScenarioChart').getContext('2d');
+            new Chart(landfillScenarioCtx, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        wrapLabel('มีพี่เลี้ยงช่วยแยก'),
+                        wrapLabel('มีถังขยะ 3 ประเภท'),
+                        wrapLabel('ไม่มีการคัดแยกเลย')
+                    ],
+                    datasets: [{
+                        label: '% ขยะไปหลุมฝังกลบ',
+                        data: [10, 14.5, 100],
+                        backgroundColor: ['#08A045', '#F79824', '#F15946'],
+                        borderRadius: 6,
+                        barThickness: 40,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%'
+                                }
+                            }
+                        },
+                    },
+                    plugins: {
+                        ...defaultTooltipOptions.plugins,
+                        legend: { display: false }
+                    }
+                }
+            });
+
+
+            const buildingStationsCtx = document.getElementById('buildingStationsChart').getContext('2d');
+            const buildingLabels = ['อาคารศูนย์การเรียนรู้มหิดล (MLC)', 'อาคารสิริวิทยา', 'อาคารสิทธาคาร'].map(label => wrapLabel(label, 20));
+            new Chart(buildingStationsCtx, {
+                type: 'bar',
+                data: {
+                    labels: buildingLabels,
+                    datasets: [{
+                        label: 'จำนวนจุดแยกขยะครบวงจร',
+                        data: [4, 2, 1],
+                        backgroundColor: '#57A773',
+                        borderRadius: 6,
+                        barThickness: 30
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                     scales: {
+                        x: { beginAtZero: true, ticks: { stepSize: 1 } },
+                    },
+                    plugins: {
+                        ...defaultTooltipOptions.plugins,
+                        legend: { display: false }
+                    }
+                }
+            });
+
+            const teamManpowerCtx = document.getElementById('teamManpowerChart').getContext('2d');
+            const teamLabels = ['น้องนักศึกษาช่วยงาน', 'แม่บ้าน (Organizer)', 'เจ้าหน้าที่ (พี่เลี้ยง)'].map(wrapLabel);
+            new Chart(teamManpowerCtx, {
+                type: 'bar',
+                data: {
+                    labels: teamLabels,
+                    datasets: [{
+                        label: 'จำนวนกำลังคน',
+                        data: [50, 8, 5],
+                        backgroundColor: ['#F79824', '#F15946', '#08A045'],
+                        borderRadius: 6,
+                        barThickness: 40,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true },
+                    },
+                     plugins: {
+                         ...defaultTooltipOptions.plugins,
+                        legend: { display: false }
+                    }
+                }
+            });
+
+            const tabs = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(item => item.classList.remove('active'));
+                    tab.classList.add('active');
+                    const target = tab.getAttribute('data-tab');
+                    tabContents.forEach(content => {
+                        if (content.id === `${target}-content`) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            function makeImageZoomable(modal) {
+                const img = modal.querySelector('img');
+                const container = img.parentElement;
+
+                let scale = 1;
+                let isDragging = false;
+                let startPos = { x: 0, y: 0 };
+                let currentTranslate = { x: 0, y: 0 };
+
+                // --- Apply initial styles ---
+                container.style.overflow = 'hidden';
+                container.style.maxHeight = '85vh';
+                container.style.display = 'flex';
+                container.style.alignItems = 'center';
+                container.style.justifyContent = 'center';
+                
+                img.style.transition = 'transform 0.2s ease-out';
+                img.style.cursor = 'grab';
+                img.style.transformOrigin = 'center';
+                img.style.maxHeight = 'none';
+                img.style.maxWidth = '100%';
+
+
+                function applyTransform() {
+                    img.style.transform = `translate(${currentTranslate.x}px, ${currentTranslate.y}px) scale(${scale})`;
+                }
+
+                // --- Event Listeners ---
+                // 1. Zoom with mouse wheel
+                container.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    const delta = e.deltaY > 0 ? -0.15 : 0.15;
+                    scale = Math.max(1, Math.min(4, scale + delta));
+
+                    if (scale === 1) {
+                        currentTranslate = { x: 0, y: 0 };
+                    }
+                    
+                    applyTransform();
+                });
+
+                // 2. Pan with mouse drag
+                img.addEventListener('mousedown', (e) => {
+                    if (scale <= 1) return;
+                    e.preventDefault();
+                    isDragging = true;
+                    startPos.x = e.clientX - currentTranslate.x;
+                    startPos.y = e.clientY - currentTranslate.y;
+                    img.style.cursor = 'grabbing';
+                    img.style.transition = 'none';
+                });
+
+                window.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    currentTranslate.x = e.clientX - startPos.x;
+                    currentTranslate.y = e.clientY - startPos.y;
+                    applyTransform();
+                });
+
+                window.addEventListener('mouseup', () => {
+                    if (isDragging) {
+                        isDragging = false;
+                        img.style.cursor = 'grab';
+                        img.style.transition = 'transform 0.2s ease-out';
+                    }
+                });
+
+                // --- Reset function ---
+                modal.resetZoom = () => {
+                    scale = 1;
+                    currentTranslate = { x: 0, y: 0 };
+                    img.style.transition = 'none';
+                    applyTransform();
+                    img.offsetHeight; // Force reflow
+                    img.style.transition = 'transform 0.2s ease-out';
+                };
+            }
+
+
+            // Image Modal Logic
+            const openModalBtn = document.getElementById('openImageModal');
+            const modal = document.getElementById('imageModal');
+            const closeModalBtn = modal.querySelector('.modal-close');
+            const modalOverlay = modal.querySelector('.modal-overlay');
+
+            const openModal = () => {
+                modal.classList.remove('hidden');
+                document.body.classList.add('modal-active');
+            };
+
+            const closeModal = () => {
+                modal.resetZoom();
+                modal.classList.add('hidden');
+                document.body.classList.remove('modal-active');
+            };
+
+            openModalBtn.addEventListener('click', openModal);
+            closeModalBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', closeModal);
+
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+            
+            makeImageZoomable(modal);
+
+            // Image Modal 2 Logic
+            const openModalBtn2 = document.getElementById('openImageModal2');
+            const modal2 = document.getElementById('imageModal2');
+            const closeModalBtn2 = modal2.querySelector('.modal-close');
+            const modalOverlay2 = modal2.querySelector('.modal-overlay');
+
+            const openModal2 = () => {
+                modal2.classList.remove('hidden');
+                document.body.classList.add('modal-active');
+            };
+
+            const closeModal2 = () => {
+                modal2.resetZoom();
+                modal2.classList.add('hidden');
+                document.body.classList.remove('modal-active');
+            };
+
+            openModalBtn2.addEventListener('click', openModal2);
+            closeModalBtn2.addEventListener('click', closeModal2);
+            modalOverlay2.addEventListener('click', closeModal2);
+
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && !modal2.classList.contains('hidden')) {
+                    closeModal2();
+                }
+            });
+
+            makeImageZoomable(modal2);
+        });
+    </script>
+</body>
+</html>
+
